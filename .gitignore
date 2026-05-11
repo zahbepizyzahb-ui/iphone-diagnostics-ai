@@ -1,49 +1,44 @@
-# Gradle
+# Gradle files
 .gradle/
 build/
+*.apk
+*.ap_
+*.dex
+
+# Local configuration file
 local.properties
-*.iml
+
+# Android Studio / IntelliJ
 .idea/
-.externalNativeBuild
-.cxx/
-
-# Android Studio
-*.ipr
-*.iws
-.navigation/
-captures/
-
-# Kotlin
-*.class
-*.kotlin_module
-
-# Backend
-__pycache__/
-*.py[cod]
-*$py.class
-.env
-venv/
-ENV/
-*.egg-info/
-dist/
-build/
-
-# Tests
-*.ec
-*.log
+.idea/caches/
+.idea/gradle.xml
+.idea/libraries
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
+*.iml
+*.jks
+*.keystore
 
 # OS
 .DS_Store
 Thumbs.db
 
-# Signing
-*.keystore
-*.jks
+# Logs
+*.log
+
+# Environment files
+.env
+.env.local
+
+# Node modules (if applicable)
+node_modules/
+npm-debug.log
 
 # IDE
+vscode/
 .vscode/
-*.swp
-*.swo
 
-# Docker
-.dockerignore
+# Coverage
+coverage/
+jacoco/
