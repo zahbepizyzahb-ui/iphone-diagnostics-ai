@@ -179,7 +179,7 @@ class APIService {
     private suspend fun testGeminiAPI(): OCRTestResult = withContext(Dispatchers.IO) {
         try {
             val request = Request.Builder()
-                .url("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${config.geminiKey}")
+                .url("https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${config.geminiKey}")
                 .post("{\"contents\": [{\"parts\":[{\"text\": \"hi\"}]}]}".toRequestBody("application/json".toMediaTypeOrNull()))
                 .build()
 
