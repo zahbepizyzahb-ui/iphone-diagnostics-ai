@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iPhone Diagnostics AI</title>
+<style>
+body{font-family:system-ui;background:#0d1117;color:#c9d1d9;padding:20px;max-width:800px;margin:0 auto}
+.header{background:#2196F3;padding:20px;border-radius:12px;text-align:center;margin-bottom:20px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px;margin:12px 0}
+.btn{background:#2196F3;color:#fff;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;width:100%;margin:8px 0;font-size:16px}
+.btn:hover{background:#1976D2}
+.input{width:100%;padding:12px;border-radius:8px;border:1px solid #30363d;background:#0d1117;color:#fff;margin:8px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid-item{background:#161b22;border-radius:12px;padding:16px;text-align:center;cursor:pointer}
+.grid-item:hover{background:#1f242c}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#161b22;border-top:1px solid #30363d;display:flex;justify-content:space-around;padding:8px}
+.nav-item{padding:8px 16px;cursor:pointer;color:#8b949e}
+.nav-item.active{color:#2196F3}
+</style>
+</head>
+<body>
+<div class="header"><h1>🔧 iPhone Diagnostics AI</h1><p>v1.2.0 - Professional Edition</p></div>
+
+<div id="content">
+  <div class="grid">
+    <div class="grid-item" onclick="alert('📊 تحليل السجلات')">
+      <div style="font-size:32px">📊</div><div>السجلات</div>
+    </div>
+    <div class="grid-item" onclick="alert('📷 ماسح البورد')">
+      <div style="font-size:32px">📷</div><div>الماسح</div>
+    </div>
+    <div class="grid-item" onclick="alert('🤖 مساعد AI')">
+      <div style="font-size:32px">🤖</div><div>AI مساعد</div>
+    </div>
+    <div class="grid-item" onclick="alert('📚 قاعدة البيانات')">
+      <div style="font-size:32px">📚</div><div>القطع</div>
+    </div>
+    <div class="grid-item" onclick="alert('📖 دليل الإصلاح')">
+      <div style="font-size:32px">📖</div><div>الدليل</div>
+    </div>
+    <div class="grid-item" onclick="alert('📋 التصليحات')">
+      <div style="font-size:32px">📋</div><div>التصليحات</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📊 المخططات الفنية (13 مخطط)</h3>
+    <p>مخططات وأدوات فنية لصيانة iPhone</p>
+    <button class="btn" onclick="window.open('charts/','_blank')">عرض المخططات</button>
+  </div>
+
+  <div class="card">
+    <h3>🔧 اختبار API</h3>
+    <input class="input" id="apiUrl" value="http://localhost:8000/api/health" placeholder="API URL">
+    <button class="btn" onclick="testAPI()">اختبار الاتصال</button>
+    <div id="apiResult"></div>
+  </div>
+
+  <div class="card">
+    <h3>⚙️ الإعدادات</h3>
+    <select class="input">
+      <option>Google ML Kit (مجاني)</option>
+      <option>OCR.space</option>
+      <option>Google Vision</option>
+      <option>Azure Vision</option>
+    </select>
+    <button class="btn" onclick="alert('✅ تم الحفظ')">حفظ الإعدادات</button>
+  </div>
+</div>
+
+<div style="height:80px"></div>
+
+<div class="nav">
+  <div class="nav-item active">الرئيسية</div>
+  <div class="nav-item">السجلات</div>
+  <div class="nav-item">الماسح</div>
+  <div class="nav-item">المزيد</div>
+</div>
+
+<script>
+function testAPI(){
+  const url=document.getElementById('apiUrl').value;
+  document.getElementById('apiResult').innerHTML='<p>⏳ جاري الاختبار...</p>';
+  fetch(url).then(r=>r.json()).then(d=>{
+    document.getElementById('apiResult').innerHTML='<p style="color:#34C759">✅ متصل: '+d.status+'</p>';
+  }).catch(e=>{
+    document.getElementById('apiResult').innerHTML='<p style="color:#FF3B30">❌ غير متصل: '+e.message+'</p>';
+  });
+}
+</script>
+</body>
+</html>

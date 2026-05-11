@@ -1,0 +1,49 @@
+# Gradle
+.gradle/
+build/
+local.properties
+*.iml
+.idea/
+.externalNativeBuild
+.cxx/
+
+# Android Studio
+*.ipr
+*.iws
+.navigation/
+captures/
+
+# Kotlin
+*.class
+*.kotlin_module
+
+# Backend
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# Tests
+*.ec
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Signing
+*.keystore
+*.jks
+
+# IDE
+.vscode/
+*.swp
+*.swo
+
+# Docker
+.dockerignore

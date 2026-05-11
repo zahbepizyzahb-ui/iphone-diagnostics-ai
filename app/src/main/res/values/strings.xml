@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">iPhone Diagnostics AI</string>
+    <string name="tab_logs">السجلات</string>
+    <string name="tab_scanner">الماسح</string>
+    <string name="tab_diagnosis">التشخيص</string>
+    <string name="tab_settings">الإعدادات</string>
+    <string name="import_file">استيراد ملف</string>
+    <string name="paste_text">لصق نص</string>
+    <string name="camera">كاميرا</string>
+    <string name="photo_library">معرض الصور</string>
+    <string name="analyzing">جاري التحليل...</string>
+    <string name="save">حفظ</string>
+    <string name="cancel">إلغاء</string>
+    <string name="delete">حذف</string>
+    <string name="error">خطأ</string>
+    <string name="success">نجاح</string>
+</resources>
