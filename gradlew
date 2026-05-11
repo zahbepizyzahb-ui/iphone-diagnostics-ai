@@ -108,7 +108,7 @@ JAVA_OPTS="${JAVA_OPTS} ${DEFAULT_JVM_OPTS}"
 # When using the daemon, arguments passed to gradle must start with a '-' or be valid class/method names.
 # Clean up by removing the object files you may have created in the process
 if [ -n "$APP_BASE_NAME" ] ; then
-    exec "$JAVA" $JAVA_OPTS -classpath "$(find . -name 'gradle-wrapper.jar' -o -name 'gradle*' | head -1)" org.gradle.wrapper.GradleWrapperMain "$@"
+    exec "$JAVA_HOME/bin/java" $JAVA_OPTS -classpath "$(find . -name 'gradle-wrapper.jar' | head -1)" org.gradle.wrapper.GradleWrapperMain "$@"
 else
-    exec "$JAVA" $JAVA_OPTS org.gradle.wrapper.GradleWrapperMain "$@"
+    exec "$JAVA_HOME/bin/java" $JAVA_OPTS org.gradle.wrapper.GradleWrapperMain "$@"
 fi
