@@ -1,17 +1,21 @@
 package com.diagnostics.viewmodel
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import android.content.Context
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.diagnostics.model.APIConfiguration
 import com.diagnostics.service.APIService
 import com.diagnostics.service.APITestResult
+import com.diagnostics.utils.Constants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class SettingsViewModel : ViewModel() {
+class SettingsViewModel(application: Application) : AndroidViewModel(application) {
     private val apiService = APIService()
+    private val prefs = application.getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE)
 
     private val _config = MutableStateFlow(APIConfiguration())
     val config: StateFlow<APIConfiguration> = _config.asStateFlow()
@@ -34,8 +38,20 @@ class SettingsViewModel : ViewModel() {
     }
 
     private fun loadSettings() {
-        // TODO: Load from DataStore/SharedPreferences
-        _config.value = APIConfiguration()
+        val savedConfig = APIConfiguration(
+            ocrSpaceKey = prefs.getString(Constants.KEY_OCR_SPACE_KEY, "") ?: "",
+            googleVisionKey = prefs.getString(Constants.KEY_GOOGLE_VISION_KEY, "") ?: "",
+            azureVisionKey = prefs.getString(Constants.KEY_AZURE_KEY, "") ?: "",
+            azureEndpoint = prefs.getString(Constants.KEY_AZURE_ENDPOINT, "") ?: "",
+            openAIKey = prefs.getString(Constants.KEY_OPENAI_KEY, "") ?: "",
+            geminiKey = prefs.getString(Constants.KEY_GEMINI_KEY, "") ?: "",
+            backendURL = prefs.getString(Constants.KEY_BACKEND_URL, "https://iphone-diagnostics-ai-production.up.railway.app") ?: "https://iphone-diagnostics-ai-production.up.railway.app",
+            selectedOCRProvider = APIConfiguration.OCRProvider.fromString(
+                prefs.getString(Constants.KEY_OCR_PROVIDER, APIConfiguration.OCRProvider.ML_KIT_FREE.name) ?: APIConfiguration.OCRProvider.ML_KIT_FREE.name
+            )
+        )
+        _config.value = savedConfig
+        APIService.updateConfig(savedConfig)
     }
 
     // ✅ تشغيل اختبار API
@@ -45,6 +61,8 @@ class SettingsViewModel : ViewModel() {
             _apiTestResults.value = emptyList()
 
             try {
+                // نحدث الإعدادات في الخدمة قبل الاختبار
+                APIService.updateConfig(_config.value)
                 val results = apiService.runFullDiagnostics()
                 _apiTestResults.value = results
             } catch (e: Exception) {
@@ -95,8 +113,19 @@ class SettingsViewModel : ViewModel() {
 
     fun saveSettings() {
         viewModelScope.launch {
-            APIService.updateConfig(_config.value)
-            // TODO: Save to DataStore
+            val c = _config.value
+            prefs.edit().apply {
+                putString(Constants.KEY_OCR_SPACE_KEY, c.ocrSpaceKey)
+                putString(Constants.KEY_GOOGLE_VISION_KEY, c.googleVisionKey)
+                putString(Constants.KEY_AZURE_KEY, c.azureVisionKey)
+                putString(Constants.KEY_AZURE_ENDPOINT, c.azureEndpoint)
+                putString(Constants.KEY_OPENAI_KEY, c.openAIKey)
+                putString(Constants.KEY_GEMINI_KEY, c.geminiKey)
+                putString(Constants.KEY_BACKEND_URL, c.backendURL)
+                putString(Constants.KEY_OCR_PROVIDER, c.selectedOCRProvider.name)
+                apply()
+            }
+            APIService.updateConfig(c)
             _showSaved.value = true
         }
     }

@@ -175,6 +175,26 @@ class APIService {
         }
     }
 
+    // ✅ اختبار Gemini API
+    private suspend fun testGeminiAPI(): OCRTestResult = withContext(Dispatchers.IO) {
+        try {
+            val request = Request.Builder()
+                .url("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${config.geminiKey}")
+                .post("{\"contents\": [{\"parts\":[{\"text\": \"hi\"}]}]}".toRequestBody("application/json".toMediaTypeOrNull()))
+                .build()
+
+            client.newCall(request).execute().use { response ->
+                if (response.isSuccessful) {
+                    OCRTestResult.SUCCESS("Gemini (AI Studio) متصل ويعمل بشكل ممتاز")
+                } else {
+                    OCRTestResult.ERROR("Gemini: HTTP ${response.code} - تأكد من صحة المفتاح")
+                }
+            }
+        } catch (e: Exception) {
+            OCRTestResult.ERROR("Gemini: ${e.message}")
+        }
+    }
+
     // ✅ تحليل سجل الأعطال
     suspend fun analyzeCrashLog(logText: String): LogAnalysisResult = withContext(Dispatchers.IO) {
         if (config.backendURL.isBlank() || config.backendURL == "http://10.0.2.2:8000") {
@@ -475,7 +495,17 @@ class APIService {
             }
         ))
 
-        // 3. اختبار تحليل السجلات (إذا كان Backend متصل)
+        // 3. اختبار Gemini (إذا كان المفتاح موجوداً)
+        if (config.geminiKey.isNotBlank()) {
+            val geminiStatus = testGeminiAPI()
+            results.add(APITestResult(
+                name = "Google Gemini (AI Studio)",
+                status = if (geminiStatus is OCRTestResult.SUCCESS) TestStatus.PASSED else TestStatus.FAILED,
+                message = if (geminiStatus is OCRTestResult.SUCCESS) geminiStatus.message else (geminiStatus as OCRTestResult.ERROR).message
+            ))
+        }
+
+        // 4. اختبار تحليل السجلات (إذا كان Backend متصل)
         if (backendStatus is APIHealthStatus.CONNECTED) {
             try {
                 val testLog = "Exception Type: EXC_BAD_ACCESS\nThread 0 Crashed"
