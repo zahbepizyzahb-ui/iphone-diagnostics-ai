@@ -103,6 +103,7 @@ data class APIConfiguration(
     val azureVisionKey: String = "",
     val azureEndpoint: String = "",
     val openAIKey: String = "",
+    val geminiKey: String = "",
     val backendURL: String = "https://iphone-diagnostics-ai-production.up.railway.app", // Railway Production
     val selectedOCRProvider: OCRProvider = OCRProvider.ML_KIT_FREE
 ) {

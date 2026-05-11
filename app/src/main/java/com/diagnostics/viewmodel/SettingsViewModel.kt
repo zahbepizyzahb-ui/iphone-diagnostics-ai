@@ -85,6 +85,10 @@ class SettingsViewModel : ViewModel() {
         _config.value = _config.value.copy(openAIKey = key)
     }
 
+    fun updateGeminiKey(key: String) {
+        _config.value = _config.value.copy(geminiKey = key)
+    }
+
     fun updateBackendURL(url: String) {
         _config.value = _config.value.copy(backendURL = url)
     }

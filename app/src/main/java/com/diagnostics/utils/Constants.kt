@@ -11,6 +11,7 @@ object Constants {
     const val KEY_AZURE_KEY = "azure_key"
     const val KEY_AZURE_ENDPOINT = "azure_endpoint"
     const val KEY_OPENAI_KEY = "openai_key"
+    const val KEY_GEMINI_KEY = "gemini_key"
     const val KEY_BACKEND_URL = "backend_url"
 
     const val ML_KIT_FREE = "Google ML Kit (مجاني - يعمل على الجهاز)"

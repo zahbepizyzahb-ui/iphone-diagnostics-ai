@@ -190,6 +190,11 @@ fun SettingsScreen(
                     value = config.openAIKey,
                     onValueChange = viewModel::updateOpenAIKey
                 )
+                APIKeyField(
+                    label = "Google Gemini (AI Studio) Key",
+                    value = config.geminiKey,
+                    onValueChange = viewModel::updateGeminiKey
+                )
             }
 
             // عنوان الخادم
