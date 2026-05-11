@@ -103,7 +103,7 @@ data class APIConfiguration(
     val azureVisionKey: String = "",
     val azureEndpoint: String = "",
     val openAIKey: String = "",
-    val backendURL: String = "http://10.0.2.2:8000", // Emulator localhost
+    val backendURL: String = "https://iphone-diagnostics-ai-production.up.railway.app", // Railway Production
     val selectedOCRProvider: OCRProvider = OCRProvider.ML_KIT_FREE
 ) {
     enum class OCRProvider(val label: String) {

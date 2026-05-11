@@ -1,8 +1,8 @@
 package com.diagnostics.utils
 
 object Constants {
-    const val BACKEND_URL_DEFAULT = "http://10.0.2.2:8000"
-    const val BACKEND_URL_DEVICE = "http://192.168.1.100:8000"
+    const val BACKEND_URL_DEFAULT = "https://iphone-diagnostics-ai-production.up.railway.app"
+    const val BACKEND_URL_DEVICE = "https://iphone-diagnostics-ai-production.up.railway.app"
 
     const val PREFS_NAME = "iphone_diagnostics_prefs"
     const val KEY_OCR_PROVIDER = "ocr_provider"
