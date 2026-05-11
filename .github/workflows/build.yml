@@ -192,3 +192,5 @@ jobs:
         name: lint-results
         path: app/build/reports/lint-results-debug.html
         retention-days: 7
+
+# Force update to Gradle 8.13 and restore standard runner
