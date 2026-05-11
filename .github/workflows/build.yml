@@ -50,7 +50,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: 🔨 Build Debug APK
-      run: java -classpath gradle/wrapper/gradle-wrapper.jar org.gradle.wrapper.GradleWrapperMain assembleDebug --stacktrace
+      run: ./gradlew assembleDebug --stacktrace
 
     - name: 📤 Upload Debug APK
       uses: actions/upload-artifact@v4
@@ -96,7 +96,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: 🔒 Build Release APK (unsigned)
-      run: java -classpath gradle/wrapper/gradle-wrapper.jar org.gradle.wrapper.GradleWrapperMain assembleRelease --stacktrace
+      run: ./gradlew assembleRelease --stacktrace
 
     - name: 📤 Upload Release APK
       uses: actions/upload-artifact@v4
@@ -142,7 +142,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: 🧪 Run Unit Tests
-      run: java -classpath gradle/wrapper/gradle-wrapper.jar org.gradle.wrapper.GradleWrapperMain test --stacktrace
+      run: ./gradlew test --stacktrace
 
     - name: 📤 Upload Test Results
       uses: actions/upload-artifact@v4
@@ -183,7 +183,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: 🔍 Run Lint
-      run: java -classpath gradle/wrapper/gradle-wrapper.jar org.gradle.wrapper.GradleWrapperMain lintDebug --stacktrace
+      run: ./gradlew lintDebug --stacktrace
 
     - name: 📤 Upload Lint Results
       uses: actions/upload-artifact@v4
