@@ -111,7 +111,8 @@ data class APIConfiguration(
         ML_KIT_FREE("Google ML Kit (مجاني)"),
         OCR_SPACE("OCR.space"),
         GOOGLE_VISION("Google Vision"),
-        AZURE_VISION("Azure Vision");
+        AZURE_VISION("Azure Vision"),
+        GEMINI("Google Gemini (AI Studio)");
 
         companion object {
             fun fromString(value: String): OCRProvider {

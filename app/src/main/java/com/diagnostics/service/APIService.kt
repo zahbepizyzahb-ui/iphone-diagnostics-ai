@@ -96,6 +96,13 @@ class APIService {
                     testAzureConnection()
                 }
             }
+            APIConfiguration.OCRProvider.GEMINI -> {
+                if (config.geminiKey.isBlank()) {
+                    OCRTestResult.ERROR("مفتاح Gemini غير مضبوط")
+                } else {
+                    testGeminiAPI()
+                }
+            }
         }
     }
 
@@ -179,7 +186,7 @@ class APIService {
     private suspend fun testGeminiAPI(): OCRTestResult = withContext(Dispatchers.IO) {
         try {
             val request = Request.Builder()
-                .url("https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${config.geminiKey}")
+                .url("https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${config.geminiKey}")
                 .post("{\"contents\": [{\"parts\":[{\"text\": \"hi\"}]}]}".toRequestBody("application/json".toMediaTypeOrNull()))
                 .build()
 
@@ -284,6 +291,7 @@ class APIService {
             APIConfiguration.OCRProvider.OCR_SPACE -> performOCRSpace(bitmap)
             APIConfiguration.OCRProvider.GOOGLE_VISION -> performGoogleVisionOCR(bitmap)
             APIConfiguration.OCRProvider.AZURE_VISION -> performAzureOCR(bitmap)
+            APIConfiguration.OCRProvider.GEMINI -> performGeminiOCR(bitmap)
         }
     }
 
@@ -409,6 +417,50 @@ class APIService {
                     }
                 }
             }
+        }
+    }
+
+    private suspend fun performGeminiOCR(bitmap: Bitmap): String = withContext(Dispatchers.IO) {
+        if (config.geminiKey.isBlank()) {
+            throw Exception("Gemini API key not configured")
+        }
+
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
+        val base64Image = android.util.Base64.encodeToString(stream.toByteArray(), android.util.Base64.DEFAULT)
+
+        val json = JSONObject().apply {
+            put("contents", org.json.JSONArray().apply {
+                put(JSONObject().apply {
+                    put("parts", org.json.JSONArray().apply {
+                        put(JSONObject().apply {
+                            put("text", "Extract all text from this image clearly. Return only the extracted text.")
+                        })
+                        put(JSONObject().apply {
+                            put("inline_data", JSONObject().apply {
+                                put("mime_type", "image/jpeg")
+                                put("data", base64Image)
+                            })
+                        })
+                    })
+                })
+            })
+        }
+
+        val request = Request.Builder()
+            .url("https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${config.geminiKey}")
+            .post(json.toString().toRequestBody("application/json".toMediaTypeOrNull()))
+            .build()
+
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) throw Exception("Gemini OCR HTTP ${response.code}")
+
+            val body = response.body?.string() ?: throw Exception("Empty response")
+            val jsonResponse = JSONObject(body)
+            val candidates = jsonResponse.getJSONArray("candidates")
+            val content = candidates.getJSONObject(0).getJSONObject("content")
+            val parts = content.getJSONArray("parts")
+            parts.getJSONObject(0).getString("text")
         }
     }
 
